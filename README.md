@@ -9,7 +9,10 @@
       3.笔记内容排序
 关键代码
 ---
+时间戳显示
+===
 NotePadProvider.java
+  创建表代码
 ```
        public void onCreate(SQLiteDatabase db) {
            db.execSQL("CREATE TABLE " + NotePad.Notes.TABLE_NAME + " ("
@@ -23,6 +26,7 @@ NotePadProvider.java
                    + ");");
        }
  ```
+   按格式显示时间
  ```
         Long now = Long.valueOf(System.currentTimeMillis());
         Date date = new Date(now);
@@ -40,9 +44,82 @@ NotePadProvider.java
             values.put(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, dateTime);
         }
   ```
-  NoteSearch.java
+ noteslist_item.xml  
+   增加显示时间的TextView
   ```
-      private static final String[] PROJECTION = new String[] {
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/grey"
+        android:paddingTop="2dp"
+        android:paddingLeft="20dp"
+        android:paddingBottom="4dp"
+        android:textSize="12sp"
+        />
+```
+NoteList.java
+  增加修改笔记的时间
+  ```
+  private static final String[] PROJECTION = new String[] {
+            NotePad.Notes._ID, // 0
+            NotePad.Notes.COLUMN_NAME_TITLE, // 1
+            NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, // 显示修改时间
+
+    };
+  ```
+  修改装配部分
+  ```
+  String[] dataColumns = {
+                NotePad.Notes.COLUMN_NAME_TITLE ,
+                NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE
+        } ;
+    
+  int[] viewIDs = { android.R.id.text1 ,R.id.text2};
+  ```
+查询笔记
+===
+list_options_menu.xml
+  增加一个查询选项
+```
+<item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/search"
+        android:title="@string/menu_search"
+        android:showAsAction="always"
+        />
+```
+NoteList.java
+   在onOptionsItemSelected中添加
+```
+        case R.id.menu_search:
+                startActivity(new Intent(Intent.ACTION_SEARCH,getIntent().getData()));
+                return true;
+ ```
+AndroidManifest.xml
+   增加
+```
+        <activity
+            android:name=".NoteSearch"
+            android:label="NoteSearch"
+            android:theme="@android:style/Theme.Holo.Light">
+            <intent-filter>
+                <action android:name="android.intent.action.NoteSearch" />
+                <action android:name="android.intent.action.SEARCH" />
+                <action android:name="android.intent.action.SEARCH_LONG_PRESS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="vnd.android.cursor.dir/vnd.google.note" />
+                <!-- 1.vnd.android.cursor.dir代表返回结果为多列数据 -->
+                <!-- 2.vnd.android.cursor.item 代表返回结果为单列数据 -->
+            </intent-filter>
+        </activity>
+```
+NoteSearch.java
+  ```
+    private static final String[] PROJECTION = new String[] {
             NotePad.Notes._ID, // 0
             NotePad.Notes.COLUMN_NAME_TITLE, // 1
             //扩展 显示时间 颜色
@@ -113,6 +190,44 @@ NotePadProvider.java
         }
     }
   ```
+note_search.xml
+```
+    <SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:queryHint="请输入搜索内容...">
+    </SearchView>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </ListView>
+```
+  导出笔记
+  ===
+  editor_options_menu.xml
+    增加导出笔记选项
+  ```
+  <item android:id="@+id/menu_output"
+        android:title="@string/menu_output" />
+  ```
+  NoteEditor.java
+    onOptionsItemSelected()中增加
+  ```
+  case R.id.menu_output:
+        outputNote();
+        break;
+  ```
+  NoteEdit.java
+  ```
+  private final void outputNote() {
+        Intent intent = new Intent(null,mUri);
+        intent.setClass(NoteEditor.this,OutputText.class);
+        NoteEditor.this.startActivity(intent);
+    }
+  ```
   OutputText.java
   ```
   private void write()
@@ -142,33 +257,37 @@ NotePadProvider.java
         }
     }
   ```
+在AndroidManifest.xml中为导出笔记功能增加权限
+output_text.xml
+```
+<EditText android:id="@+id/output_name"
+        android:maxLines="1"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="15dp"
+        android:layout_width="wrap_content"
+        android:ems="25"
+        android:layout_height="wrap_content"
+        android:autoText="true"
+        android:capitalize="sentences"
+        android:scrollHorizontally="true" />
+    <Button android:id="@+id/output_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="@string/output_ok"
+        android:onClick="OutputOk" />
+```
+字体大小、颜色
+==
   NoteList.java
   ```
      public boolean onOptionsItemSelected(MenuItem item) {
-
-
         switch (item.getItemId()) {
-        case R.id.menu_add:
-          /*
-           * Launches a new Activity using an Intent. The intent filter for the Activity
-           * has to have action ACTION_INSERT. No category is set, so DEFAULT is assumed.
-           * In effect, this starts the NoteEditor Activity in NotePad.
-           */
-           startActivity(new Intent(Intent.ACTION_INSERT, getIntent().getData()));
-           return true;
-        case R.id.menu_paste:
-          /*
-           * Launches a new Activity using an Intent. The intent filter for the Activity
-           * has to have action ACTION_PASTE. No category is set, so DEFAULT is assumed.
-           * In effect, this starts the NoteEditor Activity in NotePad.
-           */
-          startActivity(new Intent(Intent.ACTION_PASTE, getIntent().getData()));
-          return true;
-
+        ...
           case R.id.menu_search:
                 startActivity(new Intent(Intent.ACTION_SEARCH,getIntent().getData()));
                 return true;
-//创建时间排序
+          //创建时间排序
             case R.id.menu_sort1:
                 cursor = managedQuery(
                         getIntent().getData(),
@@ -204,104 +323,33 @@ NotePadProvider.java
                 );
                 setListAdapter(adapter);
                 return true;
-
-
         default:
             return super.onOptionsItemSelected(item);
         }
     }
   ```
-  NoteEdit.java
-  ```
-  private final void outputNote() {
-        Intent intent = new Intent(null,mUri);
-        intent.setClass(NoteEditor.this,OutputText.class);
-        NoteEditor.this.startActivity(intent);
-    }
-  ```
-  noteslist_item.xml
-  ```
-  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/llblue">
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/text1"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:textSize="18sp"
-
-    android:paddingTop="8dp"
-    android:paddingLeft="20dp"
-    android:singleLine="true"
-    android:textColor="@color/black"
-/>
-    <TextView
-        android:id="@+id/text2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/grey"
-        android:paddingTop="2dp"
-        android:paddingLeft="20dp"
-        android:paddingBottom="4dp"
-        android:textSize="12sp"
-        />
-
-</LinearLayout>
-```
-note_search.xml
-```
-<SearchView
-        android:id="@+id/search_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:queryHint="请输入搜索内容...">
-    </SearchView>
-
-    <ListView
-        android:id="@android:id/list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ListView>
-```
-output_text.xml
-```
-<EditText android:id="@+id/output_name"
-        android:maxLines="1"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="15dp"
-        android:layout_width="wrap_content"
-        android:ems="25"
-        android:layout_height="wrap_content"
-        android:autoText="true"
-        android:capitalize="sentences"
-        android:scrollHorizontally="true" />
-    <Button android:id="@+id/output_ok"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:text="@string/output_ok"
-        android:onClick="OutputOk" />
-```
 结果截图
 ---
 ![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193531.jpg)
-<br><br>更改字体大小、颜色<br>
+更改字体大小、颜色
+===
 ![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193104.jpg)
 ![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193152.jpg)
-<br><br>编辑标题<br>
+编辑标题
+===
 ![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193212.jpg)
 ![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193233.jpg)
 ![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193255.jpg)
-<br><br>查询笔记<br>
+查询笔记
+===
 ![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193310.jpg)
-<br><br>笔记排序<br>
+笔记排序
+==
 ![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193330.jpg)
 ![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193350.jpg)
 ![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193410.jpg)
-<br><br>导出笔记<br>
+导出笔记
+==
 ![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193427.jpg)
 ![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193442.jpg)
 ![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193501.jpg)
