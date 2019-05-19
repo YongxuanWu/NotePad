@@ -257,7 +257,7 @@ note_search.xml
         }
     }
   ```
-在AndroidManifest.xml中为导出笔记功能增加权限
+在AndroidManifest.xml中为导出笔记功能增加权限<br>
 output_text.xml
 ```
 <EditText android:id="@+id/output_name"
