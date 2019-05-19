@@ -4,9 +4,9 @@
       1.NoteList中显示条目增加时间戳显示
       2.添加笔记本查询功能（根据标题查询）
     附加功能：
-      1.UI美化
+      1.UI美化(设置字体大小、颜色)
       2.导出笔记
-      3.笔记内容排序
+      3.笔记内容排序(按创建时间或修改时间)
 关键代码
 ==
 时间戳显示
@@ -69,7 +69,7 @@ NoteList.java
 
     };
   ```
-  修改装配部分
+ 修改装配部分
   ```
   String[] dataColumns = {
                 NotePad.Notes.COLUMN_NAME_TITLE ,
@@ -220,7 +220,7 @@ note_search.xml
         outputNote();
         break;
   ```
-  NoteEdit.java
+  NoteEditor.java
   ```
   private final void outputNote() {
         Intent intent = new Intent(null,mUri);
@@ -330,24 +330,24 @@ output_text.xml
   ```
 结果截图
 ===
-![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193531.jpg)<br>
+![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193531.jpg)<br><br>
 更改字体大小、颜色
 --
 ![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193104.jpg)
-![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193152.jpg)<br>
+![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193152.jpg)<br><br>
 编辑标题
 --
 ![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193212.jpg)
 ![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193233.jpg)
-![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193255.jpg)<br>
+![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193255.jpg)<br><br>
 查询笔记
 --
-![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193310.jpg)<br>
+![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193310.jpg)<br><br>
 笔记排序
 --
 ![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193330.jpg)
 ![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193350.jpg)
-![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193410.jpg)<br>
+![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193410.jpg)<br><br>
 导出笔记
 --
 ![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193427.jpg)
