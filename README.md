@@ -330,6 +330,8 @@ output_text.xml
   ```
 结果截图
 ===
+时间戳显示
+--
 ![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures1/Screenshot_20190519_193531.jpg)<br><br>
 更改字体大小、颜色
 --
