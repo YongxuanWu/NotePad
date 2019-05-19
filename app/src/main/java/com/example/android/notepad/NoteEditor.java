@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -37,6 +38,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * This Activity handles "editing" a note, where editing is responding to
@@ -445,6 +450,43 @@ public class NoteEditor extends Activity {
         case R.id.menu_revert:
             cancelNote();
             break;
+            //导出笔记选项
+            case R.id.menu_output:
+                outputNote();
+                break;
+            case R.id.font_10:
+
+                mText.setTextSize(20);
+                Toast toast =Toast.makeText(NoteEditor.this,"修改成功",Toast.LENGTH_SHORT);
+                toast.show();
+                finish();
+                break;
+
+            case R.id.font_16:
+                mText.setTextSize(32);
+                Toast toast2 =Toast.makeText(NoteEditor.this,"修改成功",Toast.LENGTH_SHORT);
+                toast2.show();
+                finish();
+                break;
+            case R.id.font_20:
+                mText.setTextSize(40);
+                Toast toast3 =Toast.makeText(NoteEditor.this,"修改成功",Toast.LENGTH_SHORT);
+                toast3.show();
+                finish();
+                break;
+            case R.id.red_font:
+                mText.setTextColor(Color.RED);
+                Toast toast4 =Toast.makeText(NoteEditor.this,"修改成功",Toast.LENGTH_SHORT);
+                toast4.show();
+                finish();
+                break;
+            case R.id.black_font:
+                mText.setTextColor(Color.BLACK);
+                Toast toast5 =Toast.makeText(NoteEditor.this,"修改成功",Toast.LENGTH_SHORT);
+                toast5.show();
+                finish();
+                break;
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -522,10 +564,14 @@ public class NoteEditor extends Activity {
      * @param title The new note title to use
      */
     private final void updateNote(String text, String title) {
+        Long now = Long.valueOf(System.currentTimeMillis());
+        Date date = new Date(now);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd   HH:mm");
+        String dateTime = format.format(date);
 
         // Sets up a map to contain values to be updated in the provider.
         ContentValues values = new ContentValues();
-        values.put(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, System.currentTimeMillis());
+        values.put(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, dateTime);
 
         // If the action is to insert a new note, this creates an initial title for it.
         if (mState == STATE_INSERT) {
@@ -613,4 +659,12 @@ public class NoteEditor extends Activity {
             mText.setText("");
         }
     }
+
+    //跳转导出笔记的activity，将uri信息传到新的activity
+    private final void outputNote() {
+        Intent intent = new Intent(null,mUri);
+        intent.setClass(NoteEditor.this,OutputText.class);
+        NoteEditor.this.startActivity(intent);
+    }
+
 }

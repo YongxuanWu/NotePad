@@ -45,6 +45,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -196,7 +198,9 @@ public class NotePadProvider extends ContentProvider implements PipeDataWriter<C
                    + NotePad.Notes.COLUMN_NAME_TITLE + " TEXT,"
                    + NotePad.Notes.COLUMN_NAME_NOTE + " TEXT,"
                    + NotePad.Notes.COLUMN_NAME_CREATE_DATE + " INTEGER,"
-                   + NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE + " INTEGER"
+                   + NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE + " INTEGER,"
+                   + NotePad.Notes.COLUMN_NAME_TEXT_COLOR + " INTEGER," //新增加的修改字体颜色
+                   + NotePad.Notes.COLUMN_NAME_TEXT_SIZE + " INTEGER" //新增加的修改字体大小
                    + ");");
        }
 
@@ -515,18 +519,22 @@ public class NotePadProvider extends ContentProvider implements PipeDataWriter<C
             values = new ContentValues();
         }
 
+
         // Gets the current system time in milliseconds
         Long now = Long.valueOf(System.currentTimeMillis());
+        Date date = new Date(now);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd  HH:mm");
+        String dateTime = format.format(date);
 
         // If the values map doesn't contain the creation date, sets the value to the current time.
         if (values.containsKey(NotePad.Notes.COLUMN_NAME_CREATE_DATE) == false) {
-            values.put(NotePad.Notes.COLUMN_NAME_CREATE_DATE, now);
+            values.put(NotePad.Notes.COLUMN_NAME_CREATE_DATE, dateTime);
         }
 
         // If the values map doesn't contain the modification date, sets the value to the current
         // time.
         if (values.containsKey(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE) == false) {
-            values.put(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, now);
+            values.put(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, dateTime);
         }
 
         // If the values map doesn't contain a title, sets the value to the default title.

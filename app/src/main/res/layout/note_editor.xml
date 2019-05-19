@@ -23,6 +23,6 @@
     android:scrollbars="vertical"
     android:fadingEdge="vertical"
     android:gravity="top"
-    android:textSize="22sp"
+    android:textSize="18sp"
     android:capitalize="sentences"
 />

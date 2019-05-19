@@ -26,6 +26,8 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -60,6 +62,8 @@ public class NotesList extends ListActivity {
     private static final String[] PROJECTION = new String[] {
             NotePad.Notes._ID, // 0
             NotePad.Notes.COLUMN_NAME_TITLE, // 1
+            NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, // 显示修改时间
+
     };
 
     /** The index of the title column */
@@ -94,6 +98,8 @@ public class NotesList extends ListActivity {
          * ListView, and the context menu is handled by a method in NotesList.
          */
         getListView().setOnCreateContextMenuListener(this);
+        getListView().setDivider(new ColorDrawable(getResources().getColor(R.color.touming)));
+        getListView().setDividerHeight(15);
 
         /* Performs a managed query. The Activity handles closing and requerying the cursor
          * when needed.
@@ -117,11 +123,14 @@ public class NotesList extends ListActivity {
          */
 
         // The names of the cursor columns to display in the view, initialized to the title column
-        String[] dataColumns = { NotePad.Notes.COLUMN_NAME_TITLE } ;
+        String[] dataColumns = {
+                NotePad.Notes.COLUMN_NAME_TITLE ,
+                NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE
+        } ;
 
         // The view IDs that will display the cursor columns, initialized to the TextView in
         // noteslist_item.xml
-        int[] viewIDs = { android.R.id.text1 };
+        int[] viewIDs = { android.R.id.text1 ,R.id.text2};
 
         // Creates the backing adapter for the ListView.
         SimpleCursorAdapter adapter
@@ -260,8 +269,15 @@ public class NotesList extends ListActivity {
      * @return True, if the INSERT menu item was selected; otherwise, the result of calling
      * the parent method.
      */
+    private SimpleCursorAdapter adapter;
+    private Cursor cursor;
+    private String[] dataColumns = { NotePad.Notes.COLUMN_NAME_TITLE ,  NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE } ;
+    private int[] viewIDs = { android.R.id.text1 , R.id.text2 };
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+
         switch (item.getItemId()) {
         case R.id.menu_add:
           /*
@@ -279,6 +295,48 @@ public class NotesList extends ListActivity {
            */
           startActivity(new Intent(Intent.ACTION_PASTE, getIntent().getData()));
           return true;
+
+          case R.id.menu_search:
+                startActivity(new Intent(Intent.ACTION_SEARCH,getIntent().getData()));
+                return true;
+//创建时间排序
+            case R.id.menu_sort1:
+                cursor = managedQuery(
+                        getIntent().getData(),
+                        PROJECTION,
+                        null,
+                        null,
+                        NotePad.Notes._ID
+                );
+                adapter = new SimpleCursorAdapter(
+                        this,
+                        R.layout.noteslist_item,
+                        cursor,
+                        dataColumns,
+                        viewIDs
+                );
+                setListAdapter(adapter);
+                return true;
+            //修改时间排序
+            case R.id.menu_sort2:
+                cursor = managedQuery(
+                        getIntent().getData(),
+                        PROJECTION,
+                        null,
+                        null,
+                        NotePad.Notes.DEFAULT_SORT_ORDER
+                );
+                adapter = new SimpleCursorAdapter(
+                        this,
+                        R.layout.noteslist_item,
+                        cursor,
+                        dataColumns,
+                        viewIDs
+                );
+                setListAdapter(adapter);
+                return true;
+
+
         default:
             return super.onOptionsItemSelected(item);
         }

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2007 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2007 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -30,6 +29,12 @@
     <string name="menu_revert">Revert changes</string>
     <string name="menu_copy">Copy</string>
     <string name="menu_paste">Paste</string>
+    <string name="menu_search">Search</string>
+    <string name="menu_output">Output</string>
+    <string name="menu_sort1">按创建时间排序</string>
+    <string name="menu_sort2">按修改时间排序</string>
+
+    <string name="output_ok">OK</string>
 
     <string name="button_ok">OK</string>
     <string name="text_title">Title:</string>
@@ -40,4 +45,11 @@
     <string name="error_title">Error</string>
     <string name="error_message">Error loading note</string>
     <string name="nothing_to_save">There is nothing to save</string>
+    <string name="font_size">字体大小</string>
+    <string name="font10">10号字体</string>
+    <string name="font16">16号字体</string>
+    <string name="font20">20号字体</string>
+    <string name="font_color">字体颜色</string>
+    <string name="red_title">红色字体</string>
+    <string name="black_title">黑色字体</string>
 </resources>
