@@ -285,4 +285,21 @@ output_text.xml
         android:text="@string/output_ok"
         android:onClick="OutputOk" />
 ```
+结果截图
+---
+![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures/Screenshot_20190519_193104.jpg)
+![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures/Screenshot_20190519_193129.jpg)
+![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures/Screenshot_20190519_193152.jpg)
+![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures/Screenshot_20190519_193212.jpg)
+![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures/Screenshot_20190519_193233.jpg)
+![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures/Screenshot_20190519_193255.jpg)
+![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures/Screenshot_20190519_193310.jpg)
+![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures/Screenshot_20190519_193330.jpg)
+![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures/Screenshot_20190519_193350.jpg)
+![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures/Screenshot_20190519_193410.jpg)
+![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures/Screenshot_20190519_193427.jpg)
+![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures/Screenshot_20190519_193442.jpg)
+![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures/Screenshot_20190519_193501.jpg)
+![image](https://github.com/YongxuanWu/NotePad/blob/master/app/src/main/res/pictures/Screenshot_20190519_193531.jpg)
+
 
