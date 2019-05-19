@@ -277,7 +277,7 @@ output_text.xml
         android:text="@string/output_ok"
         android:onClick="OutputOk" />
 ```
-字体大小、颜色
+笔记排序
 --
   NoteList.java
   ```
